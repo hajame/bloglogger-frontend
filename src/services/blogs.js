@@ -12,8 +12,19 @@ const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
-// const removeToken = () => {
-//   token = null
-// }
+const create = async newObject => {
+  const config = {
+    headers: { Authorization: token }
+  }
+}
 
-export default { getAll, token, setToken }
+const update = (id, newObject) => {
+  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  return request.then(response => response.data)
+}
+
+const removeToken = () => {
+  token = null
+}
+
+export default { getAll, token, setToken, create, update , removeToken }
