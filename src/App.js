@@ -12,6 +12,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [noteMessage, setNoteMessage] = useState(null)
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -63,11 +64,17 @@ const App = () => {
     setAuthor('')
     setUrl('')
     setBlogs(blogs.concat(newBlog))
+    setNoteMessage(`a new blog ${newBlog.title} by ${newBlog.author} added!`)
+    setTimeout(() => {
+      setNoteMessage(null)
+    }, 5000)
   }
 
   return (
     <div>
       <h1>Bloglogger</h1>
+      {errorMessage ? <div className='error'>{errorMessage}</div> : <div></div>}
+      {noteMessage ? <div className='note'>{noteMessage}</div> : <div></div>}
       {user === null ?
         <LoginFrom
           handleLogin={handleLogin}
