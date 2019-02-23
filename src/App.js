@@ -35,6 +35,13 @@ const App = () => {
     }
   }, [])
 
+  const showMessage = (message, time) => {
+    setNoteMessage(message)
+    setTimeout(() => {
+      setNoteMessage(null)
+    }, time)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -69,10 +76,7 @@ const App = () => {
     setAuthor('')
     setUrl('')
     setBlogs(blogs.concat(newBlog))
-    setNoteMessage(`a new blog ${newBlog.title} by ${newBlog.author} added!`)
-    setTimeout(() => {
-      setNoteMessage(null)
-    }, 5000)
+    showMessage(`a new blog ${newBlog.title} by ${newBlog.author} added!`, 5000)
   }
 
   const handleLike = (id) => async (event) => {
@@ -88,27 +92,23 @@ const App = () => {
 
     // UPDATE BLOGLIST
     setBlogs(blogs.map(blog => blog.id === newBlog.id ? newBlog : blog))
-
     // TODO only send success message if backend succeeds
-    setNoteMessage(`blog ${newBlog.title} by ${newBlog.author} liked!`)
-    setTimeout(() => {
-      setNoteMessage(null)
-    }, 5000)
+    showMessage(`blog ${newBlog.title} by ${newBlog.author} liked!`, 5000)
   }
 
   const handleDelete = (id) => async (event) => {
     event.preventDefault()
     const blogToDelete = blogs.find(b => b.id === id)
-    await blogService.remove(blogToDelete.id)
+    if (window.confirm(
+      `YOU ARE ENTERING THE DANGER ZONE!
+      Really remove blog ${blogToDelete.title} by ${blogToDelete.author} ?`)) {
+      await blogService.remove(blogToDelete.id)
 
-    // UPDATE BLOGLIST
-    setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
-
-    // TODO only send success message if backend succeeds
-    setNoteMessage(`blog ${blogToDelete.title} by ${blogToDelete.author} deleted!`)
-    setTimeout(() => {
-      setNoteMessage(null)
-    }, 5000)
+      // UPDATE BLOGLIST
+      setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
+      // TODO only send success message if backend succeeds
+      showMessage(`blog ${blogToDelete.title} by ${blogToDelete.author} deleted!`, 5000)
+    }
   }
 
   return (
