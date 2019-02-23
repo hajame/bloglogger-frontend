@@ -1,5 +1,6 @@
 import React, { useState, useImperativeHandle } from 'react'
-const Blog = ({ blog, ref, handleLike, handleDelete, user }) => {
+
+const Blog = React.forwardRef(({ blog, ref, handleLike, handleDelete, user }) => {
 
   const [expand, setExpand] = useState(false)
 
@@ -52,6 +53,6 @@ const Blog = ({ blog, ref, handleLike, handleDelete, user }) => {
       }
     </div>
   )
-}
+})
 
 export default Blog

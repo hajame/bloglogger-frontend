@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const BlogForm = ({
   handleCreation,
@@ -9,7 +10,6 @@ const BlogForm = ({
   author,
   url
 }) => {
-
   return (
     <div>
       <h2>add new</h2>
@@ -34,6 +34,16 @@ const BlogForm = ({
       </form>
     </div>
   )
+}
+
+BlogForm.propTypes = {
+  handleCreation: PropTypes.func.isRequired,
+  handleTitleChange: PropTypes.func.isRequired,
+  handleAuthorChange: PropTypes.func.isRequired,
+  handleUrlChange: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired
 }
 
 export default BlogForm
