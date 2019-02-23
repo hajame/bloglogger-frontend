@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle } from 'react'
-const Blog = ({ blog, ref, handleLike, handleDelete }) => {
+const Blog = ({ blog, ref, handleLike, handleDelete, user }) => {
 
   const [expand, setExpand] = useState(false)
 
@@ -23,7 +23,7 @@ const Blog = ({ blog, ref, handleLike, handleDelete }) => {
 
   return (
     <div style={blogStyle}>
-      { expand ?
+      {expand ?
         <div onClick={toggleExpand}>
           <div>
             &quot;{blog.title}&quot; by: <i>{blog.author}</i>
@@ -37,9 +37,13 @@ const Blog = ({ blog, ref, handleLike, handleDelete }) => {
           <div>
             added by {blog.user.name}
           </div>
-          <div>
-            Danger zone => <button onClick={handleDelete}>remove</button>
-          </div>
+          {user === blog.user.username ?
+            <div>
+              Danger zone: <button onClick={handleDelete}>remove</button>
+            </div> :
+            <div></div>
+          }
+
         </div>
         :
         <div onClick={toggleExpand}>
