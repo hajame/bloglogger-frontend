@@ -75,6 +75,27 @@ const App = () => {
     }, 5000)
   }
 
+  const handleLike = (id) => async (event) => {
+    event.preventDefault()
+    let oldBlog = blogs.find(b => b.id === id)
+    let blogToUpdate = {
+      ...oldBlog,
+      likes: oldBlog.likes + 1
+    }
+    console.log('oldLikes', oldBlog.likes)
+    const newBlog = await blogService.update(blogToUpdate.id, blogToUpdate)
+    console.log('UpdatedLikes', newBlog.likes)
+
+    // UPDATE BLOGLIST
+    setBlogs(blogs.map(blog => blog.id === newBlog.id ? newBlog : blog))
+
+    // TODO only send success message if backend succeeds
+    setNoteMessage(`blog ${newBlog.title} by ${newBlog.author} liked!`)
+    setTimeout(() => {
+      setNoteMessage(null)
+    }, 5000)
+  }
+
   return (
     <div>
       <h1>Bloglogger</h1>
@@ -110,7 +131,11 @@ const App = () => {
           </div>
           <h2>blogs</h2>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} ref={React.createRef()} />
+            <Blog key={blog.id}
+              blog={blog}
+              ref={React.createRef()}
+              handleLike={handleLike(blog.id)}
+            />
           )}
         </div>
       }

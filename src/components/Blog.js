@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle } from 'react'
-const Blog = ({ blog, ref }) => {
+const Blog = ({ blog, ref, handleLike }) => {
 
   const [expand, setExpand] = useState(false)
 
@@ -32,7 +32,7 @@ const Blog = ({ blog, ref }) => {
             <a href={blog.url}>{blog.url}</a>
           </div>
           <div>
-            {blog.likes} <button>like</button>
+            {blog.likes} <button onClick={handleLike}>like</button>
           </div>
           <div>
             added by {blog.user.name}
