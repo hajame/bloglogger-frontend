@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle } from 'react'
-const Blog = ({ blog, ref, handleLike }) => {
+const Blog = ({ blog, ref, handleLike, handleDelete }) => {
 
   const [expand, setExpand] = useState(false)
 
@@ -36,6 +36,9 @@ const Blog = ({ blog, ref, handleLike }) => {
           </div>
           <div>
             added by {blog.user.name}
+          </div>
+          <div>
+            Danger zone => <button onClick={handleDelete}>remove</button>
           </div>
         </div>
         :

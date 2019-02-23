@@ -96,6 +96,21 @@ const App = () => {
     }, 5000)
   }
 
+  const handleDelete = (id) => async (event) => {
+    event.preventDefault()
+    const blogToDelete = blogs.find(b => b.id === id)
+    await blogService.remove(blogToDelete.id)
+
+    // UPDATE BLOGLIST
+    setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
+
+    // TODO only send success message if backend succeeds
+    setNoteMessage(`blog ${blogToDelete.title} by ${blogToDelete.author} deleted!`)
+    setTimeout(() => {
+      setNoteMessage(null)
+    }, 5000)
+  }
+
   return (
     <div>
       <h1>Bloglogger</h1>
@@ -135,6 +150,7 @@ const App = () => {
               blog={blog}
               ref={React.createRef()}
               handleLike={handleLike(blog.id)}
+              handleDelete={handleDelete(blog.id)}
             />
           )}
         </div>
