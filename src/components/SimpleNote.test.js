@@ -10,26 +10,35 @@ import SimpleBlog from './SimpleBlog'
 // Lisää komponenttiin tarvittaessa
 // testausta helpottavia CSS-luokkia.
 
-afterEach(cleanup)
+describe('<SimpleBlog />', () => {
+  let component
 
-test('renders content', () => {
-  const blog = {
-    title: 'Power and powerful powers',
-    author: 'Max Henry',
-    likes: 999
-  }
 
-  const component = render(
-    <SimpleBlog blog={blog} />
-  )
+  afterEach(cleanup)
+  beforeEach(() => {
+    const blog = {
+      title: 'Power and powerful powers',
+      author: 'Max Henry',
+      likes: 999
+    }
+    component = render(
+      <SimpleBlog blog={blog} />
+    )
+  })
 
-  expect(component.container).toHaveTextContent(
-    'Power and powerful powers'
-  )
-  expect(component.container).toHaveTextContent(
-    'Max Henry'
-  )
-  expect(component.container).toHaveTextContent(
-    '999'
-  )
+  it('renders blog information', () => {
+    const blogInfo = component.container.querySelector('.blogInfo')
+    expect(blogInfo).toHaveTextContent(
+      'Power and powerful powers'
+    )
+    expect(blogInfo).toHaveTextContent(
+      'Max Henry'
+    )
+  })
+  it('renders likes information', () => {
+    const likeInfo = component.container.querySelector('.likeInfo')
+    expect(likeInfo).toHaveTextContent(
+      '999'
+    )
+  })
 })
