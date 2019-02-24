@@ -25,7 +25,7 @@ const Blog = React.forwardRef(({ blog, ref, handleLike, handleDelete, user }) =>
   return (
     <div style={blogStyle}>
       {expand ?
-        <div onClick={toggleExpand}>
+        <div onClick={toggleExpand} className='blog'>
           <div>
             &quot;{blog.title}&quot; by: <i>{blog.author}</i>
           </div>
@@ -47,7 +47,7 @@ const Blog = React.forwardRef(({ blog, ref, handleLike, handleDelete, user }) =>
 
         </div>
         :
-        <div onClick={toggleExpand}>
+        <div onClick={toggleExpand} className='blog'>
           &quot;{blog.title}&quot; by <i>{blog.author}</i>
         </div>
       }
