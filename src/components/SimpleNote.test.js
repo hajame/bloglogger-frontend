@@ -3,16 +3,8 @@ import 'jest-dom/extend-expect'
 import { render, cleanup } from 'react-testing-library'
 import SimpleBlog from './SimpleBlog'
 
-// Tee testi, joka varmistaa, 
-// että komponentti renderöi
-// blogin titlen, authorin ja likejen määrän.
-
-// Lisää komponenttiin tarvittaessa
-// testausta helpottavia CSS-luokkia.
-
 describe('<SimpleBlog />', () => {
   let component
-
 
   afterEach(cleanup)
   beforeEach(() => {
