@@ -1,23 +1,12 @@
-import React, { useState, useImperativeHandle } from 'react'
+import React, { useState } from 'react'
 
-const Blog = React.forwardRef(({ blog, ref, handleLike, handleDelete, user }) => {
-
-  // const blog = props.blog
-  // const handleLike = props.handleLike
-  // const handleDelete = props.handleDelete
-  // const user = props.user
+const Blog = ({ blog, handleLike, handleDelete, user }) => {
 
   const [expand, setExpand] = useState(false)
 
   const toggleExpand = () => {
     setExpand(!expand)
   }
-
-  useImperativeHandle(ref, () => {
-    return {
-      toggleExpand
-    }
-  })
 
   const blogStyle = {
     paddingTop: 10,
@@ -57,6 +46,6 @@ const Blog = React.forwardRef(({ blog, ref, handleLike, handleDelete, user }) =>
       }
     </div>
   )
-})
+}
 
 export default Blog

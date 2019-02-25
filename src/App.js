@@ -152,7 +152,6 @@ const App = () => {
                 handleLike={handleLike(blog.id)}
                 handleDelete={handleDelete(blog.id)}
                 user={user.username}
-                ref={React.createRef()}
               />
             )}
           </div>

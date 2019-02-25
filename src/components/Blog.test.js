@@ -23,7 +23,6 @@ describe('<SimpleBlog />', () => {
         handleLike={jest.fn()}
         handleDelete={jest.fn()}
         user={user}
-        ref={React.createRef()}
       />
     )
   })
