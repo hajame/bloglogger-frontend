@@ -2,6 +2,11 @@ import React, { useState, useImperativeHandle } from 'react'
 
 const Blog = React.forwardRef(({ blog, ref, handleLike, handleDelete, user }) => {
 
+  // const blog = props.blog
+  // const handleLike = props.handleLike
+  // const handleDelete = props.handleDelete
+  // const user = props.user
+
   const [expand, setExpand] = useState(false)
 
   const toggleExpand = () => {
@@ -44,7 +49,6 @@ const Blog = React.forwardRef(({ blog, ref, handleLike, handleDelete, user }) =>
             </div> :
             <div></div>
           }
-
         </div>
         :
         <div onClick={toggleExpand} className='blog'>
