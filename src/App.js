@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import LoginFrom from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import { useField } from './hooks/index'
 
@@ -116,22 +117,11 @@ const App = () => {
       {errorMessage ? <div className='error'>{errorMessage}</div> : <div></div>}
       {noteMessage ? <div className='note'>{noteMessage}</div> : <div></div>}
       {user === null ?
-
-        <div>
-          <h2>Login</h2>
-          <form onSubmit={handleLogin}>
-            <div className='usernameField'>
-              username
-              <input {...username} />
-            </div>
-            <div>
-              password
-              <input {...password}
-              />
-            </div>
-            <button type='submit'>Log in</button>
-          </form>
-        </div>
+        <LoginFrom
+          handleLogin={handleLogin}
+          username={username}
+          password={password}
+        />
         :
         <div>
           <p>{user.name} logged in</p>
