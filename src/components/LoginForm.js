@@ -7,12 +7,7 @@ const LoginForm = (props) => (
     <form onSubmit={props.handleLogin}>
       <div className='usernameField'>
         username
-        <input
-          type='text'
-          value={props.username}
-          name='Username'
-          onChange={({ target }) => props.setUsername(target.value)}
-        />
+        <input {...props.username}/>
       </div>
       <div>
         password
@@ -30,9 +25,9 @@ const LoginForm = (props) => (
 
 LoginForm.propTypes = {
   handleLogin: PropTypes.func.isRequired,
-  setUsername: PropTypes.func.isRequired,
+  // setUsername: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
+  // username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
 }
 

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import LoginFrom from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import { useField } from './hooks/index'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -46,14 +46,12 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password
+        username: username.value, password: password.value
       })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       setErrorMessage('wrong username or password')
       setTimeout(() => {
@@ -118,13 +116,23 @@ const App = () => {
       {errorMessage ? <div className='error'>{errorMessage}</div> : <div></div>}
       {noteMessage ? <div className='note'>{noteMessage}</div> : <div></div>}
       {user === null ?
-        <LoginFrom
-          handleLogin={handleLogin}
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-        /> :
+
+        <div>
+          <h2>Login</h2>
+          <form onSubmit={handleLogin}>
+            <div className='usernameField'>
+              username
+              <input {...username} />
+            </div>
+            <div>
+              password
+              <input {...password}
+              />
+            </div>
+            <button type='submit'>Log in</button>
+          </form>
+        </div>
+        :
         <div>
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Log out</button>
