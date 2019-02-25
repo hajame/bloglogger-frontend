@@ -22,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs.sort((a, b) => (a.likes - b.likes)).reverse())
+      setBlogs(blogs.sort((a, b) => (b.likes - a.likes)))
     )
   }, [])
 
@@ -86,12 +86,13 @@ const App = () => {
       ...oldBlog,
       likes: oldBlog.likes + 1
     }
-    console.log('oldLikes', oldBlog.likes)
     const newBlog = await blogService.update(blogToUpdate.id, blogToUpdate)
-    console.log('UpdatedLikes', newBlog.likes)
 
     // UPDATE BLOGLIST
-    setBlogs(blogs.map(blog => blog.id === newBlog.id ? newBlog : blog))
+    setBlogs(blogs
+      .map(blog => blog.id === newBlog.id ? newBlog : blog)
+      .sort((a, b) => (b.likes - a.likes))
+    )
     // TODO only send success message if backend succeeds
     showMessage(`blog ${newBlog.title} by ${newBlog.author} liked!`, 5000)
   }

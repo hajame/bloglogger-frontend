@@ -1,13 +1,12 @@
 import React from 'react'
 import 'jest-dom/extend-expect'
-import { render, cleanup, fireEvent } from 'react-testing-library'
+import { render, fireEvent } from 'react-testing-library'
 import SimpleBlog from './SimpleBlog'
 
 describe('<SimpleBlog />', () => {
   let component
   let onClick
 
-  afterEach(cleanup)
   beforeEach(() => {
     const blog = {
       title: 'Power and powerful powers',

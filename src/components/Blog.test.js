@@ -1,12 +1,11 @@
 import React from 'react'
 import 'jest-dom/extend-expect'
-import { render, cleanup, fireEvent } from 'react-testing-library'
+import { render, fireEvent } from 'react-testing-library'
 import Blog from './Blog'
 
 describe('<SimpleBlog />', () => {
   let component
 
-  afterEach(cleanup)
   beforeEach(() => {
 
     const blog = {
