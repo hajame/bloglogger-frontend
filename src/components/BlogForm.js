@@ -3,9 +3,6 @@ import PropTypes from 'prop-types'
 
 const BlogForm = ({
   handleCreation,
-  handleTitleChange,
-  handleAuthorChange,
-  handleUrlChange,
   title,
   author,
   url
@@ -17,17 +14,17 @@ const BlogForm = ({
       <form onSubmit={handleCreation}>
 
         <div>title:
-          <input type="text" value={title} name="title"
-            onChange={handleTitleChange} />
+          <input type="text" value={title.value} name="title"
+            onChange={title.onChange} />
         </div>
 
         <div>author:
-          <input type="text" value={author} name="author"
-            onChange={handleAuthorChange} />
+          <input type="text" value={author.value} name="author"
+            onChange={author.onChange} />
         </div>
         <div>url:
-          <input type="text" value={url} name="url"
-            onChange={handleUrlChange} />
+          <input type="text" value={url.value} name="url"
+            onChange={url.onChange} />
         </div>
 
         <button type="submit">Create</button>
@@ -38,12 +35,6 @@ const BlogForm = ({
 
 BlogForm.propTypes = {
   handleCreation: PropTypes.func.isRequired,
-  handleTitleChange: PropTypes.func.isRequired,
-  handleAuthorChange: PropTypes.func.isRequired,
-  handleUrlChange: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired
 }
 
 export default BlogForm

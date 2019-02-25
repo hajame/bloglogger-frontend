@@ -10,9 +10,9 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const username = useField('text')
   const password = useField('password')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
   const [errorMessage, setErrorMessage] = useState(null)
   const [noteMessage, setNoteMessage] = useState(null)
   const [user, setUser] = useState(null)
@@ -70,11 +70,16 @@ const App = () => {
 
   const handleCreation = async (event) => {
     event.preventDefault()
-    let newBlog = { title, author, url }
+    let newBlog = { 
+      title: title.value,
+      author: author.value,
+      url: url.value
+    }
     newBlog = await blogService.create(newBlog)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    newBlog.user = user
+    title.reset()
+    author.reset()
+    url.reset()
     setBlogs(blogs.concat(newBlog))
     showMessage(`a new blog ${newBlog.title} by ${newBlog.author} added!`, 5000)
   }
@@ -107,6 +112,7 @@ const App = () => {
 
       // UPDATE BLOGLIST
       setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
+      
       // TODO only send success message if backend succeeds
       showMessage(`blog ${blogToDelete.title} by ${blogToDelete.author} deleted!`, 5000)
     }
@@ -137,9 +143,6 @@ const App = () => {
               author={author}
               title={title}
               url={url}
-              handleAuthorChange={({ target }) => setAuthor(target.value)}
-              handleTitleChange={({ target }) => setTitle(target.value)}
-              handleUrlChange={({ target }) => setUrl(target.value)}
             />
             <button onClick={() => setCreateFormVisible(false)}>cancel</button>
           </div>
