@@ -7,11 +7,19 @@ const LoginForm = (props) => (
     <form onSubmit={props.handleLogin}>
       <div className='usernameField'>
         username
-        <input {...props.username}/>
+        <input
+          value={props.username.value}
+          type={props.username.type}
+          onChange={props.username.onChange}
+        />
       </div>
       <div>
         password
-        <input {...props.password} />
+        <input
+          value={props.password.value}
+          type={props.password.type}
+          onChange={props.password.onChange}        
+        />
       </div>
       <button type='submit'>Log in</button>
     </form>
