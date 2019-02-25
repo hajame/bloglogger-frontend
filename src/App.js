@@ -49,10 +49,11 @@ const App = () => {
       const user = await loginService.login({
         username: username.value, password: password.value
       })
-
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
+      username.reset()
+      password.reset()
     } catch (exception) {
       setErrorMessage('wrong username or password')
       setTimeout(() => {
