@@ -8,16 +8,17 @@ import LoginFrom from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import { useField } from './hooks/index'
 import { setNotification } from './reducers/notificationReducer'
+import { setUser } from './reducers/userReducer'
 import { initializeBlogs, like, createBlog, remove } from './reducers/blogReducer'
 
 const App = (props) => {
   const blogs = props.blogs
+  const user = props.user
   const username = useField('text')
   const password = useField('password')
   const title = useField('text')
   const author = useField('text')
   const url = useField('text')
-  const [user, setUser] = useState(null)
   const [createFormVisible, setCreateFormVisible] = useState(false)
 
   const hideWhenVisible = { display: createFormVisible ? 'none' : '' }
@@ -31,7 +32,7 @@ const App = (props) => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      props.setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
@@ -47,9 +48,9 @@ const App = (props) => {
       const user = await loginService.login({
         username: username.value, password: password.value
       })
+      props.setUser(user)
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
-      setUser(user)
       username.reset()
       password.reset()
     } catch (exception) {
@@ -59,7 +60,7 @@ const App = (props) => {
 
   const handleLogout = (event) => {
     event.preventDefault()
-    setUser(null)
+    props.setUser(null)
     window.localStorage.clear()
   }
 
@@ -150,7 +151,8 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     notification: state.notification,
-    blogs: state.blogs
+    blogs: state.blogs,
+    user: state.user
   }
 }
 
@@ -159,7 +161,8 @@ const mapDispatchToProps = {
   initializeBlogs,
   like,
   createBlog,
-  remove
+  remove,
+  setUser
 }
 
 export default connect(
