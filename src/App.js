@@ -16,9 +16,6 @@ const App = (props) => {
   const title = useField('text')
   const author = useField('text')
   const url = useField('text')
-  // const [notification, setNotification] = useState({
-  //   message: null
-  // })
   const [user, setUser] = useState(null)
   const [createFormVisible, setCreateFormVisible] = useState(false)
 
@@ -41,8 +38,8 @@ const App = (props) => {
   }, [])
 
   const notify = (message, type = 'success') => {
-    setNotification({ message, type })
-    setTimeout(() => setNotification({ message: null, type: null }), 3000)
+    props.setNotification({ message, type })
+    setTimeout(() => props.setNotification({ message: null, type: null }), 3000)
   }
 
   const handleLogin = async (event) => {
@@ -58,9 +55,6 @@ const App = (props) => {
       password.reset()
     } catch (exception) {
       notify('wrong username or password', 'error')
-      // setTimeout(() => {
-      //   setErrorMessage(null)
-      //  }, 5000)
     }
   }
 
