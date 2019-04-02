@@ -164,11 +164,17 @@ const App = (props) => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
+}
+
 const mapDispatchToProps = {
   setNotification
 }
 
 export default connect(
-  null,
-  { mapDispatchToProps },
+  mapStateToProps,
+  mapDispatchToProps,
 )(App)

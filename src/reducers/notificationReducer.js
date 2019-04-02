@@ -8,8 +8,8 @@ export const setNotification = ({ message, type }) => {
   }
 }
 
-export const notificationReducer = (state = { message: null, type: null }, action) => {
-  console.log('message', state.message, 'type', state.type)
+const notificationReducer = (state = { message: null, type: null }, action) => {
+  console.log('STATE', state)
   switch (action.type) {
 
   case 'SET_NOTIFICATION':
