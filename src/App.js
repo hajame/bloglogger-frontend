@@ -7,10 +7,11 @@ import loginService from './services/login'
 import LoginFrom from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import { useField } from './hooks/index'
-import { setNotification } from './reducers/notificationReducer.js'
+import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs, like, createBlog, remove } from './reducers/blogReducer'
 
 const App = (props) => {
-  const [blogs, setBlogs] = useState([])
+  const blogs = props.blogs
   const username = useField('text')
   const password = useField('password')
   const title = useField('text')
@@ -23,9 +24,7 @@ const App = (props) => {
   const showWhenVisible = { display: createFormVisible ? '' : 'none' }
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs.sort((a, b) => (b.likes - a.likes)))
-    )
+    props.initializeBlogs()
   }, [])
 
   useEffect(() => {
@@ -66,36 +65,29 @@ const App = (props) => {
 
   const handleCreation = async (event) => {
     event.preventDefault()
-    let newBlog = {
+    let blog = {
       title: title.value,
       author: author.value,
       url: url.value
     }
-    newBlog = await blogService.create(newBlog)
-    newBlog.user = user
+    props.createBlog({ blog, user })
     title.reset()
     author.reset()
     url.reset()
-    setBlogs(blogs.concat(newBlog))
-    notify(`a new blog ${newBlog.title} by ${newBlog.author} added!`)
+    notify(`a new blog ${blog.title} by ${blog.author} added!`)
   }
 
   const handleLike = (id) => async (event) => {
     event.preventDefault()
-    let oldBlog = blogs.find(b => b.id === id)
+    let likedBlog = blogs.find(b => b.id === id)
     let blogToUpdate = {
-      ...oldBlog,
-      likes: oldBlog.likes + 1
+      ...likedBlog,
+      likes: likedBlog.likes + 1
     }
-    const newBlog = await blogService.update(blogToUpdate.id, blogToUpdate)
+    props.like(blogToUpdate)
 
-    // UPDATE BLOGLIST
-    setBlogs(blogs
-      .map(blog => blog.id === newBlog.id ? newBlog : blog)
-      .sort((a, b) => (b.likes - a.likes))
-    )
     // TODO only send success message if backend succeeds
-    notify(`blog ${newBlog.title} by ${newBlog.author} liked!`)
+    notify(`blog ${likedBlog.title} by ${likedBlog.author} liked!`)
   }
 
   const handleDelete = (id) => async (event) => {
@@ -104,10 +96,7 @@ const App = (props) => {
     if (window.confirm(
       `YOU ARE ENTERING THE DANGER ZONE!
       Really remove blog ${blogToDelete.title} by ${blogToDelete.author} ?`)) {
-      await blogService.remove(blogToDelete.id)
-
-      // UPDATE BLOGLIST
-      setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
+      props.remove(blogToDelete)
 
       // TODO only send success message if backend succeeds
       notify(`blog ${blogToDelete.title} by ${blogToDelete.author} deleted!`)
@@ -160,12 +149,17 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    notification: state.notification
+    notification: state.notification,
+    blogs: state.blogs
   }
 }
 
 const mapDispatchToProps = {
-  setNotification
+  setNotification,
+  initializeBlogs,
+  like,
+  createBlog,
+  remove
 }
 
 export default connect(
