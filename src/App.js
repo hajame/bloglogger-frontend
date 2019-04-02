@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginFrom from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import { useField } from './hooks/index'
+import { setNotification } from './reducers/notificationReducer.js'
 
-const App = () => {
+const App = (props) => {
   const [blogs, setBlogs] = useState([])
   const username = useField('text')
   const password = useField('password')
   const title = useField('text')
   const author = useField('text')
   const url = useField('text')
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [noteMessage, setNoteMessage] = useState(null)
+  // const [notification, setNotification] = useState({
+  //   message: null
+  // })
   const [user, setUser] = useState(null)
   const [createFormVisible, setCreateFormVisible] = useState(false)
 
@@ -36,11 +40,9 @@ const App = () => {
     }
   }, [])
 
-  const showMessage = (message, time) => {
-    setNoteMessage(message)
-    setTimeout(() => {
-      setNoteMessage(null)
-    }, time)
+  const notify = (message, type = 'success') => {
+    setNotification({ message, type })
+    setTimeout(() => setNotification({ message: null, type: null }), 3000)
   }
 
   const handleLogin = async (event) => {
@@ -55,10 +57,10 @@ const App = () => {
       username.reset()
       password.reset()
     } catch (exception) {
-      setErrorMessage('wrong username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      notify('wrong username or password', 'error')
+      // setTimeout(() => {
+      //   setErrorMessage(null)
+      //  }, 5000)
     }
   }
 
@@ -70,7 +72,7 @@ const App = () => {
 
   const handleCreation = async (event) => {
     event.preventDefault()
-    let newBlog = { 
+    let newBlog = {
       title: title.value,
       author: author.value,
       url: url.value
@@ -81,7 +83,7 @@ const App = () => {
     author.reset()
     url.reset()
     setBlogs(blogs.concat(newBlog))
-    showMessage(`a new blog ${newBlog.title} by ${newBlog.author} added!`, 5000)
+    notify(`a new blog ${newBlog.title} by ${newBlog.author} added!`)
   }
 
   const handleLike = (id) => async (event) => {
@@ -99,7 +101,7 @@ const App = () => {
       .sort((a, b) => (b.likes - a.likes))
     )
     // TODO only send success message if backend succeeds
-    showMessage(`blog ${newBlog.title} by ${newBlog.author} liked!`, 5000)
+    notify(`blog ${newBlog.title} by ${newBlog.author} liked!`)
   }
 
   const handleDelete = (id) => async (event) => {
@@ -112,17 +114,16 @@ const App = () => {
 
       // UPDATE BLOGLIST
       setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
-      
+
       // TODO only send success message if backend succeeds
-      showMessage(`blog ${blogToDelete.title} by ${blogToDelete.author} deleted!`, 5000)
+      notify(`blog ${blogToDelete.title} by ${blogToDelete.author} deleted!`)
     }
   }
 
   return (
     <div>
       <h1>Bloglogger</h1>
-      {errorMessage ? <div className='error'>{errorMessage}</div> : <div></div>}
-      {noteMessage ? <div className='note'>{noteMessage}</div> : <div></div>}
+      <Notification notification={props.notification} />
       {user === null ?
         <LoginFrom
           handleLogin={handleLogin}
@@ -163,4 +164,11 @@ const App = () => {
   )
 }
 
-export default App
+const mapDispatchToProps = {
+  setNotification
+}
+
+export default connect(
+  null,
+  { mapDispatchToProps },
+)(App)
